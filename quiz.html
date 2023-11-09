@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .quiz-container {
+            width: 80%;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .question {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .option {
+            margin: 5px;
+        }
+        #result {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Quiz System</h1>
+        <div id="question" class="question"></div>
+        <div id="options" class="options"></div>
+        <button onclick="nextQuestion()">Next</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "What is the capital of France?",
+                options: ["Paris", "London", "Madrid", "Berlin"],
+                answer: "Paris"
+            },
+            {
+                question: "What is the largest planet in our solar system?",
+                options: ["Earth", "Jupiter", "Mars", "Venus"],
+                answer: "Jupiter"
+            },
+            {
+                question: "Which programming language is known for its use in web development?",
+                options: ["Java", "Python", "JavaScript", "C++"],
+                answer: "JavaScript"
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function displayQuestion() {
+            const currentQuestion = questions[currentQuestionIndex];
+            const questionElement = document.getElementById("question");
+            const optionsElement = document.getElementById("options");
+            const resultElement = document.getElementById("result");
+
+            questionElement.textContent = currentQuestion.question;
+            optionsElement.innerHTML = "";
+
+            currentQuestion.options.forEach((option) => {
+                const optionButton = document.createElement("button");
+                optionButton.textContent = option;
+                optionButton.className = "option";
+                optionButton.onclick = () => checkAnswer(option);
+                optionsElement.appendChild(optionButton);
+            });
+
+            resultElement.textContent = `Score: ${score}/${currentQuestionIndex}`;
+        }
+
+        function checkAnswer(selectedOption) {
+            const currentQuestion = questions[currentQuestionIndex];
+            if (selectedOption === currentQuestion.answer) {
+                score++;
+            }
+
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            const resultElement = document.getElementById("result");
+            resultElement.textContent = `Your final score is: ${score}/${questions.length}`;
+            document.getElementById("options").innerHTML = "";
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        displayQuestion();
+    </script>
+</body>
+</html>
